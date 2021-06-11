@@ -211,6 +211,7 @@ int validarEscopos(Pilha* pilha,Pilha* pilhaParenteses,Pilha* pilhaColchetes,Pil
     int contParenteses = 0;
     int contColchetes = 0;
     int contChaves = 0;
+    int soma = 0;
     while(aux != NULL){
         escopos = aux->dado;
             if(escopos == ')'){
@@ -234,8 +235,8 @@ int validarEscopos(Pilha* pilha,Pilha* pilhaParenteses,Pilha* pilhaColchetes,Pil
             }
         aux = aux->proximo;
     }
-
-    printf("Parenteses: %i Colchetes: %i Chaves: %i", contParenteses,contColchetes,contChaves);
+    soma = contParenteses + contColchetes + contChaves;
+    if(soma % 2 == 0){
+        printf("Operacao invalida falta de escopos");
+    }
 }
-
-
