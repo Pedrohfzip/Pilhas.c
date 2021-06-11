@@ -26,13 +26,17 @@ void mostrarPilha(Pilha*);
 void liberaPilha(Pilha*);
 char escreverOperacao();
 char mostrarOperacao();
-void validarEscopos(Pilha*);
+int validarEscopos(Pilha*,Pilha*,Pilha*,Pilha*);
+Elemento* primeiroFila(Pilha*);
 
 
 
 int main(){
 
 Pilha* pilha = criaPilha();
+Pilha* pilhaParenteses = criaPilha();
+Pilha* pilhaColchetes = criaPilha();
+Pilha* pilhaChaves = criaPilha();
 Pilha* pilhaEscopos = criaPilha();
 
 
@@ -45,7 +49,11 @@ Pilha* pilhaEscopos = criaPilha();
     compararCaracter(pilha,pilhaEscopos);
     printf("\n");
 
-    validarEscopos(pilhaEscopos);
+    validarEscopos(pilhaEscopos,pilhaParenteses,pilhaColchetes,pilhaChaves);
+     printf("\n");
+
+
+
 
 }
 
@@ -137,26 +145,25 @@ void compararCaracter(Pilha* pilhaOperacao,Pilha* pilhaEscopo){
     char caracterOper;
     while(auxOperacao != NULL){
         caracterOper = auxOperacao->dado;
-            if(caracterOper == ')'|| caracterOper == '(' || caracterOper == '[' || caracterOper == ']' || caracterOper == '{' || caracterOper == '}'){
+            if(caracterOper == ')'){
+                push(pilhaEscopo,caracterOper);
+            }else if(caracterOper == '('){
+                push(pilhaEscopo,caracterOper);
+            }else if(caracterOper == '['){
+                push(pilhaEscopo,caracterOper);
+            }else if(caracterOper == ']'){
+                push(pilhaEscopo,caracterOper);
+            }else if(caracterOper == '{'){
+                push(pilhaEscopo,caracterOper);
+            }else if(caracterOper == '}'){
                 push(pilhaEscopo,caracterOper);
             }
+
         auxOperacao = auxOperacao->proximo;
-        cont++;
     }
 
 }
 
-//=============================================
-
-void validarEscopos(Pilha* pilha){
- Elemento* aux = pilha->head;
- while(aux != NULL){
-        char palavra = aux->dado;
-        printf("%c", palavra);
-        aux = aux->proximo;
-    }
-
-}
 
 //=============================================
 
@@ -170,6 +177,15 @@ void liberaPilha(Pilha* pilha){
 
     }
 }
+
+//=============================================
+
+Elemento* primeiroDaFila(Pilha* pilha){
+
+    return pilha->head;
+}
+
+//=============================================
 
 char escreverOperacao(Pilha* pilha){
 char operacao[30];
@@ -185,6 +201,41 @@ printf("Digite a operacao: ");
 
 
 
+}
+
+//=============================================
+
+int validarEscopos(Pilha* pilha,Pilha* pilhaParenteses,Pilha* pilhaColchetes,Pilha* pilhaChaves){
+    Elemento* aux = pilha->head;
+    char escopos;
+    int contParenteses = 0;
+    int contColchetes = 0;
+    int contChaves = 0;
+    while(aux != NULL){
+        escopos = aux->dado;
+            if(escopos == ')'){
+                push(pilhaParenteses,escopos);
+                contParenteses++;
+            }else if(escopos == '('){
+                push(pilhaParenteses,escopos);
+                contParenteses++;
+            }else if(escopos == '['){
+                push(pilhaColchetes,escopos);
+                contColchetes++;
+            }else if(escopos == ']'){
+                push(pilhaParenteses,escopos);
+                contColchetes++;
+            }else if(escopos == '{'){
+                push(pilhaChaves,escopos);
+                contChaves++;
+            }else if(escopos == '}'){
+                push(pilhaChaves,escopos);
+                contChaves++;
+            }
+        aux = aux->proximo;
+    }
+
+    printf("Parenteses: %i Colchetes: %i Chaves: %i", contParenteses,contColchetes,contChaves);
 }
 
 
